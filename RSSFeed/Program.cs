@@ -24,13 +24,19 @@ namespace RSSFeed
 
                 // If there are no files for the day then all items are new
                 List<FeedItem> newItems = filesInDir.Count() == 0 ? feedModel.Items : new List<FeedItem>();
+                List<FeedItem> existingItems = new List<FeedItem>();
 
                 foreach (FileInfo foundFile in filesInDir)
                 {
-                    var existingItems = JsonHelper.LoadJson(foundFile.FullName).Items.ToList();
-                    newItems.AddRange(feedModel.Items.Where(y => !existingItems.Any(x => x.Title == y.Title && x.Description == y.Description && x.PubDate == y.PubDate && x.Link == y.Link)));              
+                    existingItems.AddRange(JsonHelper.LoadJson(foundFile.FullName).Items.ToList());
                 }
-
+                foreach (FeedItem itm in feedModel.Items)
+                {
+                    if (!existingItems.Any(x => x.Title == itm.Title && x.Description == itm.Description && x.Link == itm.Link && x.PubDate == itm.PubDate))
+                    {
+                        newItems.Add(itm);
+                    }
+                }
                 feedModel.Items = newItems;
             }           
 
