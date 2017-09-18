@@ -22,8 +22,7 @@ namespace RSSFeed
                 DirectoryInfo directoryToSearch = new DirectoryInfo(@feedDirectory);
                 FileInfo[] filesInDir = directoryToSearch.GetFiles("*" + partialName + "*.*");
 
-                // If there are no files for the day then all items are new
-                List<FeedItem> newItems = filesInDir.Count() == 0 ? feedModel.Items : new List<FeedItem>();
+                List<FeedItem> newItems =  new List<FeedItem>();
                 List<FeedItem> existingItems = new List<FeedItem>();
 
                 foreach (FileInfo foundFile in filesInDir)
